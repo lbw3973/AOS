@@ -14,6 +14,7 @@ interface IPropsTitleWithInput {
 
 interface IPropsTitleWithConfirmInput extends IPropsTitleWithInput {
   buttonText: string;
+  hasTimer?: boolean;
 }
 
 export type { IPropsTitleWithInput, IPropsTitleWithConfirmInput };
