@@ -1,8 +1,8 @@
 import React from "react";
 import { DefaultTheme, NavigationContainer, NavigationProp, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Auth from "@/pages/Auth";
-import Main from "@/pages/Main";
+import Auth, { IAuthPathName } from "@/pages/Auth";
+import Main, { IMainPathName } from "@/pages/Main";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const navTheme = {
@@ -13,14 +13,7 @@ const navTheme = {
   },
 };
 
-interface StackParamList {
-  Main: undefined;
-  Login: undefined;
-  SignUp: undefined;
-  Inquire: undefined;
-  FindPassword: undefined;
-  InputUserInfo: undefined;
-}
+interface StackParamList extends IAuthPathName, IMainPathName {}
 
 export const useAppNavigation = (): NavigationProp<StackParamList> => {
   return useNavigation<NavigationProp<StackParamList>>();

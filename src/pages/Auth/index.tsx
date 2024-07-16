@@ -8,7 +8,15 @@ import SignUp from "./SignUp";
 import Inquire from "./Inquire";
 import FindPassword from "./FindPassword";
 import InputUserInfo from "./InputUserInfo";
-import { SafeAreaView, View } from "react-native";
+
+export interface IAuthPathName {
+  Intro: undefined;
+  Login: undefined;
+  SignUp: undefined;
+  Inquire: undefined;
+  FindPassword: undefined;
+  InputUserInfo: undefined;
+}
 
 const Auth = () => {
   return (
