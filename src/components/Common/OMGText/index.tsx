@@ -2,12 +2,10 @@ import React from "react";
 import * as S from "./style";
 import { TextProps } from "react-native";
 
-interface ICustomTextProps extends TextProps {
-  $isBold?: boolean;
-}
+interface ICustomTextProps extends TextProps {}
 
-const OMGText: React.FC<ICustomTextProps> = ({ style, $isBold, ...rest }) => {
-  return <S.CustomText style={style} {...rest} allowFontScaling={false} $isBold />;
+const OMGText: React.FC<ICustomTextProps> = ({ style, ...rest }) => {
+  return <S.CustomText style={style} {...rest} allowFontScaling={false} />;
 };
 
 export default OMGText;
