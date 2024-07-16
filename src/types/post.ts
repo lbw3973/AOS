@@ -13,7 +13,9 @@ interface IPostData {
 
 interface ICommentData extends ILikeData {
   contents: string;
+  comments?: ICommentData[];
   likes: ILikeData[];
+  created_at: string;
 }
 
 interface ILikeData {
