@@ -1,12 +1,12 @@
 import { emailSendCodeSchema, findPasswordSchema } from "@/utils/Yup_Schema";
 import { Formik } from "formik";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./style";
 import { Animated, Text, View } from "react-native";
 import TitleWithInput from "@/components/Auth/TitleWithInput";
-import theme from "@/styles/theme";
 import { useAppNavigation } from "@/navigation/Navigation";
 import TitleWithConfirmInput from "@/components/Auth/TItleWithConfirmInput";
+import { useStartTimerStore } from "@/stores/useStartTimerStore";
 
 const FindPassword = () => {
   const [isFocus, setIsFocus] = useState({
@@ -15,6 +15,11 @@ const FindPassword = () => {
   });
 
   const navigation = useAppNavigation();
+  const { setIsTimerRunning, resetIsTimerRunning } = useStartTimerStore();
+
+  useEffect(() => {
+    resetIsTimerRunning();
+  }, []);
 
   const translateXAnim = useRef(new Animated.Value(500)).current;
 
@@ -26,7 +31,9 @@ const FindPassword = () => {
     }).start();
   };
 
-  const handleSendEmail = () => {};
+  const handleSendEmail = () => {
+    setIsTimerRunning();
+  };
 
   const handleCheckCode = () => {
     // 인증 코드 확인해서 맞으면
@@ -62,27 +69,17 @@ const FindPassword = () => {
               </TitleWithConfirmInput>
             </S.InputWrapper>
             <S.InputWrapper>
-              <S.TitleWrapper>
-                <S.Title>인증코드</S.Title>
+              <TitleWithConfirmInput
+                title="인증코드"
+                placeholder="인증코드를 입력해주세요."
+                buttonText="인증 확인"
+                value={values.code}
+                onChangeText={handleChange("code")}
+                onPress={handleSubmit}
+                hasTimer
+              >
                 {touched.code && errors.code && <S.TextError>* {errors.code}</S.TextError>}
-              </S.TitleWrapper>
-              <S.AuthenticationView>
-                <S.Input
-                  style={{ flex: 1 }}
-                  placeholder="인증코드를 입력해주세요."
-                  placeholderTextColor={theme.colors.place_holder}
-                  $focus={isFocus.code}
-                  onFocus={() => setIsFocus(prevState => ({ ...prevState, code: true }))}
-                  onBlur={() => {
-                    setIsFocus(prevState => ({ ...prevState, code: false }));
-                  }}
-                  onChangeText={handleChange("code")}
-                  value={values.code}
-                />
-                <S.ButtonConfirm onPress={() => handleSubmit()}>
-                  <Text style={{ fontWeight: "800", color: "#fff" }}>인증 확인</Text>
-                </S.ButtonConfirm>
-              </S.AuthenticationView>
+              </TitleWithConfirmInput>
             </S.InputWrapper>
           </>
         )}

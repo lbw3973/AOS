@@ -43,28 +43,16 @@ const SignUp = () => {
             </TitleWithConfirmInput>
           </S.InputWrapper>
           <S.InputWrapper>
-            <S.TitleWrapper>
-              <S.Title>인증코드</S.Title>
+            <TitleWithConfirmInput
+              title="인증코드"
+              placeholder="인증코드를 입력해주세요."
+              buttonText="인증 확인"
+              value={values.code}
+              onChangeText={handleChange("code")}
+              onPress={handleCheckCode}
+            >
               {touched.code && errors.code && <S.TextError>* {errors.code}</S.TextError>}
-            </S.TitleWrapper>
-            <S.AuthenticationView>
-              <S.Input
-                style={{ flex: 1 }}
-                placeholder="인증코드를 입력해주세요."
-                placeholderTextColor={theme.colors.place_holder}
-                $focus={isFocus.code}
-                onFocus={() => setIsFocus(prevState => ({ ...prevState, code: true }))}
-                onBlur={() => {
-                  setIsFocus(prevState => ({ ...prevState, code: false }));
-                  handleBlur("code");
-                }}
-                onChangeText={handleChange("code")}
-                value={values.code}
-              />
-              <S.ButtonConfirm>
-                <Text style={{ fontWeight: "800", color: "#fff" }}>인증 확인</Text>
-              </S.ButtonConfirm>
-            </S.AuthenticationView>
+            </TitleWithConfirmInput>
           </S.InputWrapper>
           <S.InputWrapper>
             <TitleWithInput

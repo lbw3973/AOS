@@ -11,6 +11,7 @@ export const InputWithButton = styled.View<{ $focus: boolean }>`
   background-color: white;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   gap: 10px;
 `;
 
