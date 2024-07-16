@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./style";
-import { Dimensions, Image } from "react-native";
+import { Dimensions, Image, NativeSyntheticEvent, TextLayoutEventData, TouchableOpacity } from "react-native";
 import OMGText from "@/components/Common/OMGText";
 import theme from "@/styles/theme";
 import { splitHashTags } from "@/utils/splitHashTags";
 import { IOpenCommentsModal, IPostData } from "@/types/post";
-import CommentsModal from "../CommentsModal";
 import { useAppNavigation } from "@/navigation/Navigation";
 
-const Post = ({ postProps, OpenCommentsModal }: { postProps: IPostData; OpenCommentsModal: IOpenCommentsModal }) => {
+const PostItem = ({
+  postProps,
+  openCommentsModal,
+}: {
+  postProps: IPostData;
+  openCommentsModal: IOpenCommentsModal;
+}) => {
   const [swiperHeight, setSwiperHeight] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const navigation = useAppNavigation();
+
+  const getLineLength = (e: NativeSyntheticEvent<TextLayoutEventData>) => {
+    return e.nativeEvent.lines.length;
+  };
 
   useEffect(() => {
     const { width } = Dimensions.get("window");
@@ -26,8 +37,8 @@ const Post = ({ postProps, OpenCommentsModal }: { postProps: IPostData; OpenComm
           <OMGText>{postProps.userName}</OMGText>
           <OMGText style={{ color: theme.colors.place_holder }}>{postProps.created_at}</OMGText>
         </S.UserDateWrapper>
-        <Image source={require("@/assets/Icons/Main/Icon_DM.png")} style={{ marginRight: 8 }} />
-        <Image source={require("@/assets/Icons/Main/Icon_ETC.png")} />
+        <Image source={require("@/assets/Icons/Main/Home/Icon_DM.png")} style={{ marginRight: 8 }} />
+        <Image source={require("@/assets/Icons/Main/Home/Icon_ETC.png")} />
       </S.PostHeader>
       <S.ImageSwiper loop={false} $height={swiperHeight}>
         {postProps.images.map((image, index) => (
@@ -35,26 +46,30 @@ const Post = ({ postProps, OpenCommentsModal }: { postProps: IPostData; OpenComm
         ))}
       </S.ImageSwiper>
       <S.CountsContainer>
-        <S.CountsWrapper onPress={() => navigation.navigate("Login")}>
-          <Image source={require("@/assets/Icons/Main/Icon_Likes.png")} />
+        <S.CountsWrapper>
+          <Image source={require("@/assets/Icons/Main/Home/Icon_Likes.png")} />
           <OMGText>{postProps.likes.length}</OMGText>
         </S.CountsWrapper>
-        <S.CountsWrapper onPress={() => OpenCommentsModal.setIsOpenCommentsModal(true)}>
-          <Image source={require("@/assets/Icons/Main/Icon_Comments.png")} />
+        <S.CountsWrapper onPress={() => openCommentsModal.setIsOpenCommentsModal(true)}>
+          <Image source={require("@/assets/Icons/Main/Home/Icon_Comments.png")} />
           <OMGText>{postProps.comments.length}</OMGText>
         </S.CountsWrapper>
       </S.CountsContainer>
       <S.ContentsWrapper>
-        <OMGText>{postProps.contents}</OMGText>
+        <OMGText onTextLayout={getLineLength} numberOfLines={isExpanded ? undefined : 3}>
+          {postProps.contents}
+        </OMGText>
+        <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
+          <OMGText style={{ color: "#9b9b9b" }}>{isExpanded ? " 간단히 보기" : " 더보기"}</OMGText>
+        </TouchableOpacity>
       </S.ContentsWrapper>
       <S.HashTagWrapper>
         <OMGText style={{ color: "#699d51" }}>
           {splitHashTags(postProps.hashtags).map((hashtag, index) => `${index === 0 ? "" : "#"}${hashtag} `)}
         </OMGText>
       </S.HashTagWrapper>
-      <CommentsModal OpenCommentsModal={OpenCommentsModal} />
     </S.Container>
   );
 };
 
-export default Post;
+export default PostItem;

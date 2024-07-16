@@ -15,8 +15,8 @@ export const PostHeader = styled.View`
 `;
 
 export const ProfileImage = styled.Image`
-  width: 37px;
-  height: 37px;
+  width: 36px;
+  height: 36px;
   border-radius: 50px;
 `;
 
